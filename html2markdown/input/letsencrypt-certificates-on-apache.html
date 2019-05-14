@@ -1,0 +1,16 @@
+<p>Example, stripped down Apache virtual host configuration:</p>
+<pre>&lt;VirtualHost *:443&gt;
+  ServerName example.com
+  SSLEngine on
+  SSLProxyEngine On
+  SSLCertificateFile    /etc/pki/tls/certs/example.com.cer
+  SSLCertificateKeyFile /etc/pki/tls/private/example.com.key
+  SSLCACertificateFile  /etc/pki/tls/certs/ca.cer
+&lt;/VirtualHost&gt;</pre>
+<p>Your cert is in /root/.acme.sh/geco.gas.it/geco.gas.it.cer<br>
+Your cert key is in /root/.acme.sh/geco.gas.it/geco.gas.it.key<br>
+The intermediate CA cert is in /root/.acme.sh/geco.gas.it/ca.cer<br>
+And the full chain certs is there: /root/.acme.sh/geco.gas.it/fullchain.cer</p>
+<p>&nbsp;</p>
+<h3>Testing your server</h3>
+<p>You could use&nbsp;<a href="https://www.ssllabs.com/ssltest/">Qualys.com SSL Server Test</a>&nbsp;( or have a look at <a href="https://www.ssllabs.com/projects/documentation/">their documentation </a>)</p>

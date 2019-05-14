@@ -1,0 +1,28 @@
+<p><strong>GOAL</strong>: Point your browser to your machine port 80 ( eg: <strong>http://yourhost.com/yourapp</strong> ) and have Apache seamless redirect to an instance of Tomcat&nbsp;running on the same machine ( eg:&nbsp;<strong>http://yourhost.com:8084/yourapp</strong> )</p>
+<h2>Install mod_proxy</h2>
+<p>If not already done, we need to enable <strong>mod_proxy</strong> on Apache:</p>
+<pre># a2enmod proxy
+# a2enmod proxy_http
+# service apache2 restart</pre>
+<h2>Configure Apache</h2>
+<p>Then we must tell Apache about the web application we wish to forward to Tomcat.&nbsp;We do this by creating a new configuration file:</p>
+<pre># vi /etc/apache2/conf-available/YOURFANCYNAME.conf</pre>
+<p>containing the following lines:</p>
+<pre>ProxyPass /yourapp http://localhost:8084/yourapp
+ProxyPassReverse /yourapp http://localhost:8084/yourapp</pre>
+<p>In this example, we suppose to have a Tomcat instance listening on port <em>8084</em> and running the application <em>yourapp</em>.</p>
+<p>Finally, we have to enable the newly created configuration:</p>
+<p># a2enconf YOURFANCYNAME<br>
+# service apache2 restart</p>
+<h2>Configure Tomcat</h2>
+<p>Just one final step, tell Tomcat about the proxying:</p>
+<pre># vi /opt/apache-tomcat/conf/server.xml</pre>
+<p>or, if you are running Tomcat through Netbeans:</p>
+<pre>$ vi ~/.netbeans/8.1/apache-tomcat-8.0.27.0_base/conf/server.xml</pre>
+<p>changing the connector line like this:</p>
+<pre>&lt;!--
+ &lt;Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443"/&gt;
+--&gt;
+ &lt;Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443" proxyPort="80"/&gt;</pre>
+<h3>References</h3>
+<p><a href="https://tomcat.apache.org/tomcat-8.0-doc/proxy-howto.html">Apache Tomcat 8 Documentation -&nbsp;Proxy Support HOW-TO</a></p>

@@ -1,0 +1,16 @@
+<p><strong>Hardware</strong>: DELL Poweredge 2950</p>
+<p>Install pre-requisites:</p>
+<pre><code>yum install wget
+yum install perl</code></pre>
+<p>Set up repository:</p>
+<pre><code>wget -q -O - http://linux.dell.com/repo/hardware/dsu/bootstrap.cgi | bash</code></pre>
+<p>Install&nbsp;OMSA:</p>
+<pre><code>yum update
+yum install srvadmin-all</code></pre>
+<p>Start OMSA:</p>
+<pre><code>/opt/dell/srvadmin/sbin/srvadmin-services.sh start</code></pre>
+<p>If everything went the right way, you should find OMSA listening on port 1311:</p>
+<p><strong><em>https://YOURSERVERIP:1311</em></strong></p>
+<p>Note that it's <em>https</em> and not <em>http</em>.</p>
+<h3>References</h3>
+<p><a href="http://linux.dell.com/repo/hardware/omsa.html">Dell OMSA Linux Repository</a></p>

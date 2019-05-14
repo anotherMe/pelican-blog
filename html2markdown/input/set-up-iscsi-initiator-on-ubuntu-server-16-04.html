@@ -1,0 +1,14 @@
+<p>Install needed packages:</p>
+<pre># apt-get install vmfs-tools open-iscsi</pre>
+<p>Connect to iSCSI target :</p>
+<pre># iscsiadm -m discovery -t st -p &lt;ISCSI.TARGET.IP.HERE&gt;
+# iscsiadm -m node --login</pre>
+<p>Mount VMFS filesystem:</p>
+<pre>$ mkdir /root/iscsi_sdd
+# vmfs-fuse /dev/sdd1 /root/iscsi_sdd/</pre>
+<p>&nbsp;</p>
+<h2>Additional notes</h2>
+<p>To unmount the VMFS filesystem:</p>
+<pre># fusermount -u /root/iscsi_sdd/</pre>
+<p>To check a VMFS filesystem spanning on multiple extents ( 5 in our example ):</p>
+<pre># fsck.vmfs /dev/sdc1 /dev/sde1 /dev/sdf1 /dev/sdg1 /dev/sdh1</pre>

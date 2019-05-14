@@ -1,0 +1,18 @@
+<h3><img class="alignnone size-medium wp-image-77" src="http://justanother.me/blog/wp-content/uploads/2017/02/cactus-754882_1280-239x300.jpg" alt="" width="239" height="300"></h3>
+<h3>Install LAMP server</h3>
+<pre><code>sudo apt-get install apache2 mysql-server php libapache2-mod-php</code></pre>
+<p>During install, you'll be asked for a password for MySQL root&nbsp;user: set one and note it.</p>
+<h3>Install RRDtool</h3>
+<pre><code>sudo apt install rrdtool</code></pre>
+<h3>Install Cacti</h3>
+<p>Here we install Cacti&nbsp;with his alternate poller, <a href="http://www.cacti.net/spine_info.php">Spine</a>.</p>
+<pre><code>sudo apt-get -y install cacti cacti-spine</code></pre>
+<p>During Cacti installation process:</p>
+<ol>
+<li>ignore&nbsp;message about&nbsp;<em><strong>libphp-adodb</strong></em>&nbsp;include path,</li>
+<li>choose <strong><em>apache2</em></strong> as web server,</li>
+<li>let<em> <strong>dbconfig-common</strong></em> configure your database for you</li>
+</ol>
+<p>Access Cacti web interface at <em><strong>http://YOURHOSTIP/cacti </strong></em>to complete installation process ( default <em><strong>admin</strong></em> password is <em><strong>admin</strong></em> ).</p>
+<h6>Reference</h6>
+<p><a href="https://www.unixmen.com/install-cacti-ubuntu-14-04/">Unixmen</a></p>

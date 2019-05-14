@@ -1,0 +1,74 @@
+<h3>Install LAMP</h3>
+<pre class="contents "><span class="cmd command">sudo tasksel install lamp-server</span></pre>
+<p>Set a password for MySQL root user and note it.</p>
+<p>As of today the tasksel command results in having installed:</p>
+<ul>
+<li>PHP 7.0.15</li>
+<li>Apache&nbsp;2.4.18</li>
+<li>MySQL 5.7.18</li>
+</ul>
+<h4>Tune PHP installation</h4>
+<p>Install some more module:</p>
+<pre>sudo apt install php-cgi php-json php-xml php-mcrypt php-curl php-mysql php-zip</pre>
+<p>Edit&nbsp;PHP configuration file:</p>
+<pre>sudo vi /etc/php/7.0/apache2/php.ini</pre>
+<p>and turn off output buffering:</p>
+<pre>...
+output_buffering = Off
+...</pre>
+<h4>Tune Apache installation</h4>
+<pre>sudo a2enmod rewrite</pre>
+<h4>Tune MySQL&nbsp;and setup database</h4>
+<p>Secure MySQL server:</p>
+<pre>sudo mysql_secure_installation</pre>
+<ul>
+<li>Remove anonymous users? [Y/n]&nbsp;<strong>yes</strong></li>
+<li>Disallow root login remotely? [Y/n]&nbsp;<strong>yes</strong></li>
+<li>Remove test database and access to it? [Y/n]&nbsp;<strong>yes</strong></li>
+<li>Reload privilege tables now? [Y/n] <strong>yes</strong></li>
+</ul>
+<p>Connect to MySQL:</p>
+<pre><span class="crayon-v">mysql</span> <span class="crayon-o">-</span><span class="crayon-i">u</span> <span class="crayon-v">root</span> <span class="crayon-o">-</span><span class="crayon-v">p</span></pre>
+<p>and create a database for Joomla:</p>
+<pre id="crayon-590383392c25c000483373-2" class="crayon-line crayon-striped-line"><span class="crayon-e">mysql&gt; CREATE DATABASE joomladb;
+mysql&gt; CREATE </span><span class="crayon-e">USER </span><span class="crayon-v">joomlauser</span><span class="crayon-sy">@</span><span class="crayon-v">localhost</span><span class="crayon-sy"> IDENTIFIED BY 'your-password';</span>
+<span class="crayon-e">mysql&gt; GRANT </span><span class="crayon-e">ALL </span><span class="crayon-e">PRIVILEGES </span><span class="crayon-e">ON </span><span class="crayon-v">joomladb</span><span class="crayon-sy">.</span><span class="crayon-o">*</span> <span class="crayon-st">TO</span> <span class="crayon-s">'joomlauser'</span><span class="crayon-sy">@</span><span class="crayon-s">'localhost'</span><span class="crayon-sy">;</span>
+<span class="crayon-e">mysql&gt; FLUSH </span><span class="crayon-v">PRIVILEGES</span><span class="crayon-sy">;</span>
+<span class="crayon-v">mysql&gt; quit</span></pre>
+<h3>Install Joomla</h3>
+<p>Download and unpack Joomla:</p>
+<pre>wget&nbsp;https://fromwhereyouwant/joomla_3-6-5.tar.gz
+tar -xf joomla_3-6-5.tar.gz -C /var/www/targetdir</pre>
+<p>Change owner and group:</p>
+<pre>sudo chown -R www-data:www-data&nbsp;targetdir</pre>
+<p>Check file permissions, they should already be:</p>
+<ul>
+<li>folders: 755 or rwx r-x r-x</li>
+<li>files: 644 or rw- r-- r--</li>
+</ul>
+<h3>Create&nbsp;virtual host</h3>
+<p>Create a new conf file:</p>
+<pre id="crayon-590383392c260443711196-2" class="crayon-line crayon-striped-line"><span class="crayon-v">sudo vim </span><span class="crayon-o">/</span><span class="crayon-v">etc</span><span class="crayon-o">/</span><span class="crayon-v">apache2</span><span class="crayon-o">/</span><span class="crayon-v">sites</span><span class="crayon-o">-</span><span class="crayon-v">available</span><span class="crayon-o">/</span><span class="crayon-v">mysite</span><span class="crayon-sy">.</span><span class="crayon-v">conf</span></pre>
+<div class="crayon-line crayon-striped-line">and edit to something like this:</div>
+<pre class="crayon-line crayon-striped-line">&lt;VirtualHost *:80&gt;
+ServerAdmin admin@yourdomain.com
+DocumentRoot /var/www/yourdomain.com/
+ServerName your-domain.com
+ServerAlias www.your-domain.com
+&lt;Directory /var/www/yourdomain.com/&gt;
+Options FollowSymLinks
+AllowOverride All
+Order allow,deny
+allow from all
+&lt;/Directory&gt;
+ErrorLog /var/log/apache2/your-domain.com-error_log
+CustomLog /var/log/apache2/your-domain.com-access_log common
+&lt;/VirtualHost&gt;</pre>
+<div class="crayon-line crayon-striped-line">Then enable the new site:</div>
+<pre class="crayon-line crayon-striped-line">sudo a2ensite mysite.conf</pre>
+<div class="crayon-line crayon-striped-line">Restart Apache:</div>
+<pre class="crayon-line crayon-striped-line">sudo service apache2 restart</pre>
+<div class="crayon-line crayon-striped-line">You should now be ready to connect to your site and start Joomla configuration ( but you may have to fiddle with you <em>hosts</em> file ).</div>
+<div class="crayon-line crayon-striped-line"></div>
+<h4 class="crayon-line crayon-striped-line">Refernces</h4>
+<div class="crayon-line crayon-striped-line">This guide is based on the <a href="https://docs.joomla.org/J3.x:Installing_Joomla">official Joomla&nbsp;installation guide</a>.</div>

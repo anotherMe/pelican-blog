@@ -1,0 +1,85 @@
+<p><strong>Jersey</strong> is the reference implementation for the JSR 311 specification, also called JAX-RS (The Java API for RESTful Web Services). <em>Java Specification Request (JSR)</em> 311, defines the Java REST support API.</p>
+<h3>Add dependencies</h3>
+<p>Using <strong>Maven</strong>, we just need to add the following two dependencies</p>
+<ul>
+<li>com.sun.jersey : jersey-sevlet ( version 1.19.4 atow )</li>
+<li>com.sun.jersey.jersey-json&nbsp;( version 1.19.4 atow )</li>
+</ul>
+<p><strong>NOTE</strong>: At time of writing, version 2.x of this libraries ( migrated to group org.glassfish.jersey ) seems not to be viable option.</p>
+<p>Other needed dependencies will be added auto-magically.</p>
+<h3>Configuration</h3>
+<p>To package our <em>RESTful Web service</em> as part of a <em>web application</em> ( servlets + JSPs style application)<em>, w</em>e need to define the components of the RESTful Web service and to configure the servlet and mappings. In doing so, we have two options:</p>
+<ol>
+<li>define a class that extends <code>javax.ws.rs.core.Application</code></li>
+<li>update the <code>web.xml</code> deployment descriptor</li>
+</ol>
+<h4>Extend Application class</h4>
+<p>Option <em>one</em> involves creating a class inheriting from <code>javax.ws.rs.core.Application</code>:</p>
+<pre>import javax.ws.rs.core.Application;
+import javax.ws.rs.ApplicationPath;
+...
+@ApplicationPath("restapi")
+public class MyApplication extends Application {
+
+   @Override
+   public Set&lt;Class&lt;?&gt;&gt; getClasses() {
+   Set&lt;Class&lt;?&gt;&gt; s = new HashSet&lt;Class&lt;?&gt;&gt;();
+   s.add(MyResource1.class);
+   s.add(MyResource2.class);
+   ...
+   return s;
+ }
+}</pre>
+<p><strong>NOTE</strong>: the use of <code>ApplicationPath</code> annotation to define the base URI pattern that gets mapped to the servlet.</p>
+<h4>Update web.xml</h4>
+<p>Option <em>two</em> involves modifying ( or creating, if not present ) the <code>web.xml</code> deployment descriptor.</p>
+<pre>...
+ &lt;servlet&gt;
+ &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+ &lt;servlet-class&gt;com.sun.jersey.spi.container.servlet.ServletContainer&lt;/servlet-class&gt;
+ &lt;init-param&gt;
+ &lt;param-name&gt;com.sun.jersey.config.property.packages&lt;/param-name&gt;
+ &lt;param-value&gt;com.example.restapi&lt;/param-value&gt;
+ &lt;/init-param&gt;
+ &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+ &lt;/servlet&gt;
+ &lt;servlet-mapping&gt;
+ &lt;servlet-name&gt;Jersey Web Application&lt;/servlet-name&gt;
+ &lt;url-pattern&gt;/restapi/*&lt;/url-pattern&gt;
+ &lt;/servlet-mapping&gt;
+...</pre>
+<p><strong>NOTE</strong>: the <code>&lt;param-value&gt;it.gas.restapi&lt;/param-value&gt;</code>, which points to the package containing our resources.</p>
+<h3>Create a new resource</h3>
+<pre>package com.example.restapi;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+/**
+ * Root resource (exposed at "myresource" path)
+ */
+@Path("myresource")
+public class MyResource {
+
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getIt() {
+        return "Hello world";
+    }
+}
+</pre>
+<p>&nbsp;</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.oracle.com/cd/E24329_01/web.1211/e24983/configure.htm#RESTF179">Oracle Help Center - Packaging and Deploying RESTful Web Services</a></li>
+<li><a href="https://jersey.github.io/documentation/latest/getting-started.html">Jersey documentation - Getting started</a></li>
+<li><a href="http://www.vogella.com/tutorials/REST/article.html">Vogella -&nbsp;REST with Java (JAX-RS) using Jersey - Tutorial</a></li>
+</ul>

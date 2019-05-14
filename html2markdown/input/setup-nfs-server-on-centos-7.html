@@ -1,0 +1,22 @@
+<p>Install:</p>
+<pre>yum -y install nfs-utils</pre>
+<p>Start service and enable at boot:</p>
+<pre>systemctl start nfs-server.service
+systemctl enable nfs-server.service</pre>
+<p>Fix permissions on the folder we want to share ( will be&nbsp;here /var/nfs ):</p>
+<pre>chown nfsnobody:nfsnobody /var/nfs
+chmod 755 /var/nfs</pre>
+<p>Edit file <em>/etc/exports</em> to export the NFS shares. In the example below, we bind three different client machines:</p>
+<pre>/var/nfs 192.168.1.101(rw,sync,no_subtree_check)
+/var/nfs 192.168.1.102(rw,sync,no_subtree_check)
+/var/nfs 192.168.1.103(rw,sync,no_subtree_check)
+</pre>
+<p>Reload configuration:</p>
+<pre>exportfs -a</pre>
+<p>Add <em>iscsi-target</em>&nbsp;to firewall allowed services:</p>
+<pre>firewall-cmd --permanent --zone public --add-service mountd
+firewall-cmd --permanent --zone public --add-service rpc-bind
+firewall-cmd --permanent --zone public --add-service nfs
+firewall-cmd --reload</pre>
+<h3>Reference</h3>
+<p>[[https://www.howtoforge.com/tutorial/setting-up-an-nfs-server-and-client-on-centos-7/|reference]]</p>

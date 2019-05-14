@@ -1,0 +1,68 @@
+<p>Following are instructions for configuring an iSCSI target using <a href="http://linux-iscsi.org/wiki/Targetcli">targetcli</a> on a <strong>CentOS 7</strong> minimal installation. The underlying hardware is a <strong>DELL Poweredge 2950</strong> server with six 2TB SATA HDDs configured as a whole RAID5 volume&nbsp;of about 10TB.</p>
+<p><strong>IMPORTANT NOTE</strong>: On my first configuration attempt on the DELL PERC 57i RAID controller, keeping the RAID write policy setting to it's default value ( <em>write through</em> ), I was stuck with disk write speeds between 5 MB/sec and 10 MB/sec; only turning on <em>write back</em>, I was able to write to disk at speeds between 45 MB/sec and 50 MB/sec ( for details and risks of different write policy see <a href="http://www.computerweekly.com/feature/Write-through-write-around-write-back-Cache-explained">here</a> )</p>
+<p>The first 66,9GB of the disk have been used to install OS. This is parted -l* output:</p>
+<pre>Model: DELL PERC 5/i (scsi)
+Disk /dev/sda: 9999GB
+Sector size (logical/phyisical): 512B/512B
+Partition table: gpt
+Flag: pmbr_boot
+
+Number Start End Dimension File system Name Flag
+ 1 1049kB 2097kB 1049kB bios_grub
+ 2 2097kB 1076MB 1074MB xfs
+ 3 1076MB 66,9GB 65,8GB lvm</pre>
+<p>Using&nbsp;<em>parted</em> ( to be able to deal with GPT partition table ), we create a new partition ( will be sda4 ), from the end of the last pre-existent partition to the max available size:</p>
+<pre># parted /dev/sda
+# parted -a optimal /dev/sda mkpart primary 66,9GB 100%
+</pre>
+<p>NOTE: you possibly have to disable / reconfigure SELINUX to complete following instruction.</p>
+<pre># yum install -y targetcli
+# systemctl enable target
+</pre>
+<p>Launch targetcli interactive console:</p>
+<pre># targetcli</pre>
+<p>Let's create:</p>
+<ol>
+<li>a new&nbsp;<em>block backstore</em>,</li>
+<li>a new <em>iscsi target</em></li>
+<li>and a new lun.</li>
+</ol>
+<p>Note that "iqn.2017-01.com.example" is the name we choose for our target machine, "t1" is the nome we choose for our target.</p>
+<pre>/&gt; backstores/block/ create block1 /dev/sda4
+/&gt; iscsi/ create iqn.2017-01.com.example:t1
+/&gt; /iscsi/iqn.2017-01.com.example:t1/tpg1/luns create /backstores/block/block1
+</pre>
+<p>Now we need to set up ACLs, one for every initiator that will be connecting to our target. You have to provide the correct initiator name ( for an ESXi server, it's the iSCSI adapter's World Wide Name, aka WWN ).</p>
+<p>In the following example we add three different initiators:</p>
+<pre>/&gt; cd iscsi/iqn.2017-01.com.example:t1/tpg1/acls/
+/&gt; create iqn.1998-01.com.vmware:machine01-31bf6b8f
+/&gt; create iqn.1998-01.com.vmware:machine02-37e477e0
+/&gt; create iqn.1998-01.com.vmware:machine03-30905fb0
+</pre>
+<p>Delete the portal created by default, and add new one setting&nbsp;specific network interface:</p>
+<pre>/&gt; cd iscsi/iqn.2017-01.com.example:t1/tpg1/
+/&gt; portals/ delete 0.0.0.0 3260
+/&gt; portals/ create 10.255.2.230 3260
+</pre>
+<p>Adjust firewall to enable iSCSI traffic ( port 3260 ):</p>
+<pre># firewall-cmd --zone=public --add-service=iscsi-target --permanent # open port 3260</pre>
+<h2>Authentication</h2>
+<p>Authentication per CHAP should be enabled by default for your targets. To check authentication status:</p>
+<pre>/&gt; cd iscsi/iqn.2017-01.com.example:t1/tpg1/
+/&gt; get attribute authentication</pre>
+<p>If authentication is indeed enabled, above command output would be:</p>
+<pre>authentication=1</pre>
+<p>In the ( unfortunate) case you want to disable authentication:</p>
+<pre>/&gt; cd iscsi/iqn.2017-01.com.example:t1/tpg1/
+/&gt; set attribute authentication=0</pre>
+<h2>Troubleshooting</h2>
+<p>When troubleshooting, remember that debug messages are sent to kernel log:</p>
+<pre>tail -f /var/log/messages</pre>
+<h2>References</h2>
+<ul>
+<li><a href="https://www.certdepot.net/rhel7-configure-iscsi-target-initiator-persistently/">A guide to configure iSCSI on RHEL7</a></li>
+<li><a href="http://linux-iscsi.org/wiki/Main_Page">Linux SCSI Target wiki</a></li>
+</ul>
+<h2>Misc</h2>
+<p>In case you would want to delete everything to start all over again:</p>
+<pre>targetcli clearconfig confirm=True</pre>

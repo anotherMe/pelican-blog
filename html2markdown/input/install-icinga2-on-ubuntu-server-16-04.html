@@ -1,0 +1,80 @@
+<h2>Icinga2 installation</h2>
+<p>Setup repository:</p>
+<pre><code># wget -O - https://packages.icinga.com/icinga.key &gt; key.txt
+# apt-key add key.txt
+# echo "deb https://packages.icinga.com/ubuntu icinga-xenial main" &gt; /etc/apt/sources.list.d/icinga.list
+# apt-get update
+</code></pre>
+<p>Install main package:</p>
+<pre><code># apt-get install icinga2
+</code></pre>
+<p>Install base plugins:</p>
+<pre><code># apt-get install nagios-plugins
+</code></pre>
+<p><em>NOTE</em>: you may want to install other plugins as well.</p>
+<p>Restart icinga2 service:</p>
+<pre># sudo service icinga2 restart</pre>
+<p>That's it. Icinga2 should now be up and running. Anyway, chances are you'll want to install a nice web interface too: keep on reading then.</p>
+<h2 id="installicingaweb2">Icinga Web 2 installation</h2>
+<h3 id="setupdatabase">Setup database</h3>
+<p>Install MySQL:</p>
+<pre><code># apt-get install mysql-server mysql-client
+</code></pre>
+<p>Set and take note of MySQL root user password.</p>
+<p>Install Icinga IDO modules for MySQL:</p>
+<pre><code># apt-get install icinga2-ido-mysql
+</code></pre>
+<p>During package configuration, choose to:</p>
+<ul>
+<li>enable ido-mysql feature in icinga</li>
+<li>automatically create database</li>
+<li>create a password for the default user ( <em>icinga2</em> )</li>
+</ul>
+<p>Just in case, you can always retrieve Icinga2 database password inside this file:</p>
+<pre>/etc/icinga2/features-available/ido-mysql.conf</pre>
+<p>Enable Icinga IDO feature for MySQL:</p>
+<pre><code># icinga2 feature enable ido-mysql
+# service icinga2 restart
+</code></pre>
+<h3 id="setupwebserver">Setup web server</h3>
+<p>Install Apache:</p>
+<pre><code># apt-get install apache2
+</code></pre>
+<p>Install PHP:</p>
+<p><code>apt-get install php libapache2-mod-php php-mbstring php-mysql php-curl php-gettext php-intl</code></p>
+<p>Set default timezone by editing <em>php.ini</em> file:</p>
+<pre><code># vi /etc/php/7.0/apache2/php.ini
+</code></pre>
+<p>Set it to something like this:</p>
+<pre><code>date.timezone = "Europe\Rome"</code></pre>
+<p><strong>NOTE</strong>: As per official documentation, IcingaWeb2 is not compatible with the <em>PageSpeed</em> module, which should be disabled. I haven't bothered in doing so and that did no harm ( till now ... ).</p>
+<h3 id="prepareforwebsetup">Prepare for web setup</h3>
+<p>Web interfaces and other Icinga addons are able to send commands to Icinga 2 through the external command pipe:</p>
+<pre><code># icinga2 feature enable command
+# service icinga2 restart
+</code></pre>
+<p>By default the command pipe file is owned by the group <em>nagios</em> with read/write permissions. Add your webserver's user to the group <em>nagios</em> to enable sending commands to Icinga 2 through your web interface:</p>
+<pre><code># usermod -a -G nagios www-data
+</code></pre>
+<p>Now we can proceed with <em>Icinga Web 2</em> installation:</p>
+<pre><code># apt-get install icingaweb2</code></pre>
+<p>When using the web setup you are required to authenticate using a token. In order to generate a token use the <em>icingacli</em>:</p>
+<pre><code># icingacli setup token create
+</code></pre>
+<p>In case you do not remember the token you can show it using the icingacli:</p>
+<pre><code># icingacli setup token show
+</code></pre>
+<p>Visit Icinga Web 2 in your browser to access the setup wizard and complete the installation:</p>
+<pre><code>http://YOURSERVERIP/icingaweb2/setup</code></pre>
+<p>When asked for <em>authentication type</em>, choose <strong>Database</strong>.</p>
+<p>Configure a new resource database for the web frontend. Something like:</p>
+<p><img class="alignnone size-medium wp-image-125" src="http://justanother.me/blog/wp-content/uploads/2017/05/icingaweb2_001-300x274.png" alt="" width="300" height="274"></p>
+<p>On the next step you'll be asked for a privileged MySQL user, in order to create the IcingaWeb2 database.</p>
+<p>Create a&nbsp;privileged user to access IcingaWeb2 panel:</p>
+<p><img class="size-medium wp-image-126" src="http://justanother.me/blog/wp-content/uploads/2017/05/icingaweb2_002-300x203.png" alt="Create privileged user" width="300" height="203"></p>
+<p>In the final step you'll be asked for coordinates and credential of the Icinga main database, the one we set up at the beginning of the article.</p>
+<h3>References</h3>
+<ul>
+<li><a href="https://docs.icinga.com/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/getting-started">Icinga2 documentation - Getting started</a></li>
+<li><a href="https://github.com/Icinga/icingaweb2/blob/master/doc/02-Installation.md">IcingaWeb2 installation on GitHUB</a></li>
+</ul>

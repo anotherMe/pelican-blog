@@ -1,0 +1,7 @@
+<p>By default, Java doesn't use anti-aliasing on fonts in AWT applications. It's been available for some time however, and can be switched on with the awt.useSystemAAFontSettings setting.</p>
+<p>To enable anti-aliased fonts just for Netbeans, add following line&nbsp;to the end of the&nbsp;<span class="bbcode_c">netbeans_default_options</span>&nbsp;line in&nbsp;<span class="bbcode_c">/usr/share/netbeans/etc/netbeans.conf</span>&nbsp;e.g.:</p>
+<pre class="exestatic php">netbeans_default_options<span class="sy0">=</span><span class="st0">"-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-Dawt.useSystemAAFontSettings=on"</span></pre>
+<p>Alternatively, you can set this globally so that all AWT apps are affected, by setting the&nbsp;<span class="bbcode_c">_JAVA_OPTIONS</span>&nbsp;environment variable in your&nbsp;<span class="bbcode_c">.bash_profile*</span>:</p>
+<pre class="exestatic php">export _JAVA_OPTIONS<span class="sy0">=</span><span class="st_h">'-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'</span></pre>
+<p>This also has Swing equivalent, using the&nbsp;<span class="bbcode_c">swing.aatext</span>&nbsp;preference. You'll have to log out and log back in for this to take effect.</p>
+<p>*NOTE: if you're using <strong>openbox</strong>, set _JAVA_OPTIONS in /home/you/.config/openbox/environment</p>

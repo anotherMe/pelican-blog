@@ -1,0 +1,12 @@
+<p>I am facing DNS resolving issue when I connect to my office VPN ( OpenVPN ) using Network Manager: it seems I cannot use my company DNS.</p>
+<p>In spite of my efforts trying to force the use of my company DNS, either trying to modify openvpn config file or trying to set DNS in network-manager GUI, still /etc/resolv.conf present no trace of wanted DNS servers.</p>
+<p>I managed to resolve this issue by editing:</p>
+<pre>/etc/NetworkManager/NetworkManager.conf</pre>
+<p>and commenting out the *dnsmasq* line:</p>
+<pre>[main]
+plugins=ifupdown,keyfile,ofono
+#dns=dnsmasq
+
+[ifupdown]
+managed=false</pre>
+<p>&nbsp;</p>
