@@ -56,10 +56,8 @@ or, if you are running Tomcat through Netbeans:
 changing the connector line like this:
 
 ```html
-  <!--
-  <Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443"/>
-  -->
-  <Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443" proxyPort="80"/></pre>
+  <!--<Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443"/>-->
+  <Connector URIEncoding="utf-8" connectionTimeout="20000" port="8084" protocol="HTTP/1.1" redirectPort="8443" proxyPort="80"/>
 ```
 
 ### References

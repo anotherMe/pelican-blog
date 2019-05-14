@@ -9,8 +9,8 @@ CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
 
 FTP_HOST=memoryleak.it
-FTP_USER=pelican@memoryleak.it
-FTP_TARGET_DIR=/blog
+FTP_USER=ftpuser@memoryleak.it
+FTP_TARGET_DIR=/
 
 
 DEBUG ?= 0

@@ -19,10 +19,14 @@ Install required dependencies:
 
 ```(venv)$ pip install pelican markdown```
 
-### Build
+## Generate site
 
 ```(venv)$ pelican```
 
 ### Test
 
+Launch Pelican web server:
+
 ```(venv)$ pelican --listen```
+
+then point browser to [localhost:8000](http://localhost:8000) .
