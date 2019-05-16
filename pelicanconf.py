@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'marco'
-SITENAME = 'Memory Leak Blog'
-SITEURL = ''
+SITENAME = 'Memory Leak'
+SITEURL = 'https://memoryleak.it/blog'
 TIMEZONE = 'Europe/Rome'
 DEFAULT_LANG = 'it'
 
