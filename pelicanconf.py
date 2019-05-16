@@ -19,7 +19,12 @@ MENUITEMS = (
     ('ABOUT', '/pages/about.html'),
 )
 
-PROFILE_IMAGE='mishima.jpg'
+### Attenzione #####################
+DELETE_OUTPUT_DIRECTORY = True
+### Attenzione #####################
+
+THEME='themes/aesop-rock'
+PROFILE_IMAGE='mishima.jpg'  # used by Hyde theme
 
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
