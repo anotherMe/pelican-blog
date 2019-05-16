@@ -15,9 +15,11 @@ DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_MENU = False
 
 MENUITEMS = (
-    ('HOME', '/'),
+    ('HOME', '/index.html'),
     ('ABOUT', '/pages/about.html'),
 )
+
+PROFILE_IMAGE='mishima.jpg'
 
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
@@ -28,7 +30,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 # SOCIAL = (('You can add links in your config file', '#'),
 #           ('Another social link', '#'),)
 
-DEFAULT_PAGINATION = 1
+DEFAULT_PAGINATION = 4
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
