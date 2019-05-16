@@ -124,13 +124,13 @@ When asked for _authentication type_, choose **Database**.
 
 Configure a new resource database for the web frontend. Something like:
 
-![](http://justanother.me/blog/wp-content/uploads/2017/05/icingaweb2_001-300x274.png)
+![New resource](images/icingaweb2_001.png)
 
 On the next step you'll be asked for a privileged MySQL user, in order to create the IcingaWeb2 database.
 
 Create a privileged user to access IcingaWeb2 panel:
 
-![Create privileged user](http://justanother.me/blog/wp-content/uploads/2017/05/icingaweb2_002-300x203.png)
+![Create privileged user](images/icingaweb2_002.png)
 
 In the final step you'll be asked for coordinates and credential of the Icinga main database, the one we set up at the beginning of the article.
 

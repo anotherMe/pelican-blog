@@ -5,7 +5,7 @@ Author: Marco
 Tags: linux, ubuntu, cacti
 Status: published
 
-### ![](http://justanother.me/blog/wp-content/uploads/2017/02/cactus-754882_1280-239x300.jpg)
+### ![A cactus in the middle of the desert](images/cactus-754882.jpg)
 
 ### Install LAMP server
 
