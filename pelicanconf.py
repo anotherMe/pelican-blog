@@ -9,7 +9,15 @@ TIMEZONE = 'Europe/Rome'
 DEFAULT_LANG = 'it'
 
 PATH = 'content'
-STATIC_PATHS = ['images']
+STATIC_PATHS = [
+    'images',
+    'extra',
+]
+
+EXTRA_PATH_METADATA = {
+    'extra/cDc.ico': {'path': 'favicon.ico'},  # put favicon on site root
+}
+
 
 DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_MENU = False
