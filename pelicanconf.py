@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 AUTHOR = 'marco'
 SITENAME = 'Memory Leak'
-SITEURL = 'https://memoryleak.it/blog'
 TIMEZONE = 'Europe/Rome'
 DEFAULT_LANG = 'it'
 
@@ -48,6 +47,10 @@ DEFAULT_PAGINATION = 4
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
+# Tipue Search plugin configuration
+#PLUGIN_PATH = 'plugins'
+#PLUGINS = ['tipue_search']
+#DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'authors', 'archives', 'search']
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
