@@ -14,7 +14,9 @@ To enable anti-aliased fonts just for Netbeans, add following line to
 the end of the ```netbeans\_default\_options```
 line in:
 
-```/usr/share/netbeans/etc/netbeans.conf```
+```
+/usr/share/netbeans/etc/netbeans.conf
+```
 
 e.g.:
 
