@@ -1,7 +1,7 @@
 
 # pelican-blog
 
-These are the markdown files that make up my blog, currently hosted at memoryleak.it/blog
+This was my blog. Really nothing more than a place to save some notes.
 
 ## Setup
 
