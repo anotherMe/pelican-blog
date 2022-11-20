@@ -1,11 +1,11 @@
 
 # pelican-blog
 
-This was my blog. Really nothing more than a place to save some notes.
+This was my blog. Really nothing more than a place to save some sparse, unrelated notes.
 
 ## Setup
 
-You'll need **python**, **pip** and **virtualenv** already set up.
+You'll need **python**, **pip** and **virtualenv** already in place.
 
 Create virtualenv:
 
